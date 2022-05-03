@@ -1,0 +1,45 @@
+CREATE TABLE CATEGORIA(
+  idCategoria integer PRIMARY KEY NOT NULL,
+  nome varchar(45) NOT NULL
+);
+
+
+CREATE TABLE PRODUTO (
+  idProduto integer PRIMARY KEY NOT NULL,
+  nome varchar(45) NOT NULL,
+  descricao varchar(45) NOT NULL,
+  idCategoria integer NOT NULL,
+  CONSTRAINT FK_CATEGORIA FOREIGN KEY(idCategoria) REFERENCES CATEGORIA (idCategoria)
+);
+
+
+CREATE SEQUENCE produto_sequence START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER tr_insert_id_produto
+BEFORE INSERT ON produto FOR EACH ROW       
+BEGIN
+ 
+SELECT produto_sequence.NEXTVAL
+INTO :NEW.idProduto
+FROM DUAL;
+END;
+/
+
+
+CREATE SEQUENCE CATEGORIA_SEQuence START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER tr_insert_id_categoria
+                  BEFORE INSERT ON categoria FOR EACH ROW       
+BEGIN
+ 
+SELECT CATEGORIA_SEQuence.NEXTVAL
+INTO :new.idcategoria
+FROM DUAL;
+END;
+/
+
+INSERT INTO categoria (idcategoria, nome) VALUES ('Eletrônicos');
+INSERT INTO categoria (idcategoria, nome) VALUES ('Games');
+INSERT INTO categoria (idcategoria, nome) VALUES ('Eletrodomésticos');
+INSERT INTO categoria (idcategoria, nome) VALUES ('Alimentos');
+INSERT INTO categoria (idcategoria, nome) VALUES ('Brinquedos');
